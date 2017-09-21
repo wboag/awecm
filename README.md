@@ -11,11 +11,11 @@ https://www.overleaf.com/11188799yhjcmxphgpjm#/42196701/
 
 
 # Previous Work
-word2vec: https://arxiv.org/pdf/1402.3722.pdf
+[word2vec](https://arxiv.org/pdf/1402.3722.pdf)
 
-dependency-based word embeddings: https://levyomer.files.wordpress.com/2014/04/dependency-based-word-embeddings-acl-2014.pdf
+[dependency-based word embeddings](https://levyomer.files.wordpress.com/2014/04/dependency-based-word-embeddings-acl-2014.pdf)
 
 
 # Resources
-https://bitbucket.org/yoavgo/word2vecf
+[Levy and Goldberg code](https://bitbucket.org/yoavgo/word2vecf)
 
