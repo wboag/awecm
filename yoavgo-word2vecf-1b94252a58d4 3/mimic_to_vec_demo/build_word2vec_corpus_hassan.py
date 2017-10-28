@@ -9,9 +9,10 @@ import re
 import random
 import numpy as np
 
-context_dic = {}
-window_size=2
-def extract_context(word_list,window_size): 
+def extract_context(word_list,window_size=2,context_dic={}): 
+    '''Given a list of word, map each word to its list of left and right neighboring window_size word
+       Returns context dictionary
+    '''
     min_index = 0 
     max_index = max(0,len(word_list)-1)
     for current_word in range(len(word_list)):
@@ -26,15 +27,15 @@ def extract_context(word_list,window_size):
     return context_dic
 
 def main():
-
     try:
         size = sys.argv[1]
+        window_size = int(sys.argv[2]) #window size has now become a parameter
+        context_dictionary_name = sys.argv[3] # context dictionary name becomes a parameter
         if size not in ['small', 'medium', 'all']:
             raise Exception('bad')
     except Exception, e:
         print '\n\tusage: python %s <small|medium|all>\n' % sys.argv[0]
         exit(1)
-
     if size == 'small':
         min_id = 0
         max_id = 10
@@ -50,6 +51,9 @@ def main():
     # connect to the mimic database
     con = psycopg2.connect(dbname='mimic')
 
+    #initialize context dictionary
+    context_dic= {}
+
     # Query mimic for notes
     notes_query = \
     """
@@ -61,11 +65,16 @@ def main():
     ;
     """ % (min_id,max_id)
     notes = pd.read_sql_query(notes_query, con)
-
+    text = ''
     for i,row in notes.iterrows():
         toks = tokenize(row.text)
-        extract_context(toks,window_size)
-    np.save('context_dict_willie_code.npy',context_dic)
+        text += ' '.join(toks)+'\n'
+        extract_context(toks,window_size,context_dic)
+    with open('context_small.txt','w') as f:
+        f.write(text)
+    f.close()
+    context_dictionary_filename = str(context_dictionary_name)+'.npy'
+    np.save(context_dictionary_filename,context_dic) #Save context dictionary after having read all the notes
 
 
 regex_punctuation  = re.compile('[\',\.\-/\n]')
