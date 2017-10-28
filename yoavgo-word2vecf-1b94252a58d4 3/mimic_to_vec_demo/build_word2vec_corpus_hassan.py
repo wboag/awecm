@@ -15,15 +15,17 @@ def extract_context(word_list,window_size=2,context_dic={}):
     '''
     min_index = 0 
     max_index = max(0,len(word_list)-1)
+    context_dic_keyset = set(context_dic.keys())
     for current_word in range(len(word_list)):
 	indices = filter(lambda x: x!=0, range(-window_size,window_size+1))
         for index in indices:
             if min(current_word+index,0)>=min_index and max(current_word+index,max_index)<=max_index:
                 context_word = word_list[current_word+index]
-                if word_list[current_word] in context_dic.keys():
+                if word_list[current_word] in context_dic_keyset:
                     context_dic[word_list[current_word]].append(context_word)
                 else:
                     context_dic[word_list[current_word]]=[context_word]
+                    context_dic_keyset.add(word_list[current_word])
     return context_dic
 
 def main():
