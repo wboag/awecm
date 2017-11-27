@@ -11,7 +11,8 @@ import random
 import numpy as np
 
 
-from umls.code.interface_umls import cui_lookup
+if '--cui' in sys.argv:
+    from umls.code.interface_umls import cui_lookup
 
 
 
