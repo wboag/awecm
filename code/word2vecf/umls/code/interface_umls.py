@@ -59,3 +59,14 @@ def cui_lookup( string ):
     except sqlite3.ProgrammingError, e:
         return []
 
+def cui_relation_lookup (cui_string):
+    try:
+        #Get Rel from cui 
+        c.execute( "SELECT * FROM mrrel WHERE cui1 = ?;", (cui_string,))
+        return c.fetchall()
+    except sqlite3.ProgrammingError, e:
+        return []
+
+
+
+
