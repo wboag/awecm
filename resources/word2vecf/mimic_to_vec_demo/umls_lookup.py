@@ -133,15 +133,15 @@ if __name__ == '__main__':
         word_context_txt_name = sys.argv[2] #Context file becomes a parameter
         word_context_txt = open(word_context_txt_name,'w')
         for word in context_dict.keys():
-    	for neighbor in context_dict[word]:
-    	    word_context_txt.write(word+' '+str(neighbor)+'\n')
-    	try:
-                 cui_w= cui_lookup(word)
-                 if len(cui_w)>0:
-                    for cui in cui_w:
-    	 	    word_context_txt.write(word+' '+str(cui[0])+'\n')
-            except:
-                pass
+        	for neighbor in context_dict[word]:
+        	    word_context_txt.write(word+' '+str(neighbor)+'\n')
+        	try:
+                     cui_w= cui_lookup(word)
+                     if len(cui_w)>0:
+                        for cui in cui_w:
+        	 	    word_context_txt.write(word+' '+str(cui[0])+'\n')
+                except:
+                    pass
         word_context_txt.close()
         print 'Done'
     except:
