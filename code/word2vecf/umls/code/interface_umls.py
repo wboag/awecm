@@ -62,12 +62,12 @@ def cui_lookup( string ):
 def cui_relation_lookup (cui_string):
     try:
         #Get Rel from cui 
-        c.execute( "SELECT cui1,cui2,rel,rui,rela FROM mrrel WHERE cui1 = ?;", (cui_string,))
+        c.execute( "SELECT cui2 FROM mrrel WHERE cui1 = ?;", (cui_string,))
         return c.fetchall()
     except sqlite3.ProgrammingError, e:
         return []
 
 print "cui_lookup('blood'):   ", cui_lookup('blood')
-print "cui_rel_lookup('blood): ", cui_relation_lookup('C0005767')[:2]
+print "cui_rel_lookup('blood): ", cui_relation_lookup('C0005767')
 
 
