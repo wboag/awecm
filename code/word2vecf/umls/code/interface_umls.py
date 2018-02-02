@@ -68,6 +68,8 @@ def cui_relation_lookup (cui_string):
         return []
 
 print "cui_lookup('blood'):   ", cui_lookup('blood')
-print "cui_rel_lookup('blood): ", cui_relation_lookup('C0005767')
+print "cui_rel_lookup('blood): ", len(cui_relation_lookup('C0005767'))
+print "set of cui_rel_lookup('blood): ", len(set(cui_relation_lookup('C0005767')))
+
 
 
