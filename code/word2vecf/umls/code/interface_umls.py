@@ -67,7 +67,7 @@ def cui_relation_lookup (cui_string):
     except sqlite3.ProgrammingError, e:
         return []
 
-print "cui_lookup('blood'):   ", cui_lookup('blood')
+print "cui_lookup('lupus'):   ", cui_lookup('lupus')
 print "cui_rel_lookup('blood): ", len(cui_relation_lookup('C0005767'))
 print "set of cui_rel_lookup('blood): ", len(set(cui_relation_lookup('C0005767')))
 

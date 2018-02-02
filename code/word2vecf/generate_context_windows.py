@@ -13,6 +13,7 @@ import numpy as np
 
 if '--cui' in sys.argv:
     from umls.code.interface_umls import cui_lookup
+    from umls.code.interface_umls import cui_relation_lookup
 
 
 
@@ -173,8 +174,16 @@ def extract_context_cuis(docs, contexts_filename, N=8):
 
                 # CUI context
                 cui_context = [ c[0] for c in cui_lookup(w) ]
+                cui_context = list(set(cui_context))
+                print cui_context
 
-                context = word_context + cui_context
+                # CUI relationships context
+                cui_rel_context = []
+                for cui in cui_context:
+                    cui_rel_context+= [c_r[0] for c_r in cui_relation_lookup(cui)]
+                cui_rel_context = list(set(cui_rel_context))
+                print cui_rel_context
+                context = word_context + cui_context + cui_rel_context
 
                 for c in context:
                     # Unusre if I'm supposed to repeatedly count this for each center word
