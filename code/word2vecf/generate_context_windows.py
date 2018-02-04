@@ -100,7 +100,7 @@ def extract_context_position(docs, contexts_filename, N=8):
 
 
 
-def extract_context_cuis(docs, contexts_filename, N=8):
+def extract_context_cuis(docs, contexts_filename, N=8,rel=False):
 
     '''
     goal: do word2vec's preprocessing
@@ -175,15 +175,17 @@ def extract_context_cuis(docs, contexts_filename, N=8):
                 # CUI context
                 cui_context = [ c[0] for c in cui_lookup(w) ]
                 cui_context = list(set(cui_context))
-                print cui_context
+                context = word_context + cui_context
 
-                # CUI relationships context
-                cui_rel_context = []
-                for cui in cui_context:
-                    cui_rel_context+= [c_r[0] for c_r in cui_relation_lookup(cui)]
-                cui_rel_context = list(set(cui_rel_context))
-                print cui_rel_context
-                context = word_context + cui_context + cui_rel_context
+                if rel:
+
+                    # CUI relationships context
+                    cui_rel_context = []
+                    for cui in cui_context:
+                        cui_rel_context+= [c_r[0] for c_r in cui_relation_lookup(cui)]
+                    cui_rel_context = list(set(cui_rel_context))
+                    print cui_rel_context
+                    context +=cui_rel_context
 
                 for c in context:
                     # Unusre if I'm supposed to repeatedly count this for each center word
@@ -205,9 +207,9 @@ def main():
         w_vocab = sys.argv[4]
         c_vocab = sys.argv[5]
         context_type = sys.argv[6]
-        assert context_type in ['--word','--cui']
+        assert context_type in ['--word','--cui','--cui_rel']
     except Exception, e:
-        print '\n\tusage: python %s <corpus> <window_size> <contexts_filename> <w_vocab> <c_vocab> <--word|--cui>\n'%sys.argv[0]
+        print '\n\tusage: python %s <corpus> <window_size> <contexts_filename> <w_vocab> <c_vocab> <--word|--cui| --cui_rel>\n'%sys.argv[0]
         exit(1)
 
     # read tokens
@@ -220,6 +222,8 @@ def main():
         W, C = extract_context_position(doc_toks, contexts_filename, N=window_size)
     elif context_type == '--cui':
         W, C = extract_context_cuis(doc_toks, contexts_filename, N=window_size)
+    elif context_type == '--cui_rel'
+        W, C = extract_context_cuis(doc_toks,contexts_filename,N=window_size,rel=True)
     else:
         print 'unknown context type "%s"' % context_type
         exit(1)
