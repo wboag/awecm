@@ -62,7 +62,7 @@ Building CUI-enhanced AWE-CM vectors from word2vecf (**requires UMLS tables**) (
 
 Building CUI_REL-enhanced AWE-CM vectors from word2vecf (**requires UMLS tables**) (CUI + Related CUI)
 
-   python code/word2vecf/generate_context_windows.py data/txt/fake_discharge.txt 8 data/contexts/fake_discharge_cui_rel.contexts data/vocabs/fake_discharge_cui_rel.w data/vocabs/fake_discharge_cui_rel.c --cui_rel
+    python code/word2vecf/generate_context_windows.py data/txt/fake_discharge.txt 8 data/contexts/fake_discharge_cui_rel.contexts data/vocabs/fake_discharge_cui_rel.w data/vocabs/fake_discharge_cui_rel.c --cui_rel
 
     resources/word2vecf/word2vecf -train data/contexts/fake_discharge_cui_rel.contexts -output data/vectors/w2vf_fake_discharge_cui_rel.vec -size 300 -sample 0 -hs 0 -negative 8 -threads 12 -iters 5 -alpha 0.025 -binary 0 -wvocab data/vocabs/fake_discharge_cui_rel.w -cvocab data/vocabs/fake_discharge_cui_rel.c
 
