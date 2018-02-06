@@ -222,7 +222,7 @@ def main():
         W, C = extract_context_position(doc_toks, contexts_filename, N=window_size)
     elif context_type == '--cui':
         W, C = extract_context_cuis(doc_toks, contexts_filename, N=window_size)
-    elif context_type == '--cui_rel'
+    elif context_type == '--cui_rel':
         W, C = extract_context_cuis(doc_toks,contexts_filename,N=window_size,rel=True)
     else:
         print 'unknown context type "%s"' % context_type
