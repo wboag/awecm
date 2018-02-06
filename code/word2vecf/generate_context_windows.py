@@ -11,10 +11,9 @@ import random
 import numpy as np
 
 
-if '--cui' in sys.argv:
+if '--cui' or '--cui_rel' in sys.argv:
     from umls.code.interface_umls import cui_lookup
     from umls.code.interface_umls import cui_relation_lookup
-
 
 
 def extract_context_position(docs, contexts_filename, N=8):
@@ -100,92 +99,7 @@ def extract_context_position(docs, contexts_filename, N=8):
 
 
 
-def extract_context_cuis(docs, contexts_filename, N=8):
-
-    '''
-    goal: do word2vec's preprocessing
-        [x] dynamic context window
-        [x] rare word removal
-        [x] subsampling
-    '''
-
-    n_docs = len(docs)
-    point = int(n_docs / 20.)
-
-    # unigram counts (for filtering)
-    counts = defaultdict(int)
-    print 'unigram counts'
-    for i,toks in enumerate(docs):
-        if i%point == 0:
-            print '\t%.2f%% done (%d/%d)' % (float(i)/n_docs,i,n_docs)
-        for w in toks:
-            counts[w] += 1
-    print
-    Z = sum(counts.values())
-    freq = { w:float(count)/Z for w,count in counts.items() }
-
-    # remove rare words
-    new_docs = []
-    print 'removing rare words'
-    for i,toks in enumerate(docs):
-        if i%point == 0:
-            print '\t%.2f%% done (%d/%d)' % (float(i)/n_docs,i,n_docs)
-        new_toks = [ w for w in toks if counts[w] >= 5 ]
-        new_docs.append(new_toks)
-    docs = new_docs
-    print
-
-    # subsample to remove frequent words
-    subt = 1e-4
-    new_docs = []
-    print 'subsampling'
-    def remove_prob(w):
-        f = freq[w]
-        return (f-subt)/f - math.sqrt(subt/f)
-    for i,toks in enumerate(docs):
-        if i%point == 0:
-            print '\t%.2f%% done (%d/%d)' % (float(i)/n_docs,i,n_docs)
-        new_toks = [ w for w in toks if random.random() <= 1-remove_prob(w)]
-        new_docs.append(new_toks)
-    docs = new_docs
-    print
-
-    # build context pairs
-    W = defaultdict(int)
-    C = defaultdict(int)
-    #docs = docs[:1]
-    print 'building (w,c) pairs'
-    # save context dict
-    with open(contexts_filename, 'w') as f:
-        for i,toks in enumerate(docs):
-            if i%point == 0:
-                print '\t%.2f%% done (%d/%d)' % (float(i)/n_docs,i,n_docs)
-
-            #toks = toks[:10]
-            doc_len = len(toks)
-            for i,w in enumerate(toks):
-                W[w] += 1
-
-                # position context
-                n = random.randint(1,N)
-                i_minus_n = max(i-n  , 0)
-                i_plus_n  = min(i+n+1, doc_len)
-                word_context = toks[i_minus_n:i] + toks[i+1:i_plus_n]
-
-                # CUI context
-                cui_context = [ c[0] for c in cui_lookup(w) ]
-                cui_context = list(set(cui_context))
-                context = word_context + cui_context
-                for c in context:
-                    # Unusre if I'm supposed to repeatedly count this for each center word
-                    C[c] += 1
-
-                    print >>f, '%s %s' % (w,c)
-                    #print '\t%s %s' % (w,c)
-
-    return W, C
-
-def extract_context_cuis_rel(docs, contexts_filename, N=8):
+def extract_context_cuis(docs, contexts_filename, N=8,rel=False):
 
     '''
     goal: do word2vec's preprocessing
@@ -262,19 +176,24 @@ def extract_context_cuis_rel(docs, contexts_filename, N=8):
                 cui_context = list(set(cui_context))
                 context = word_context + cui_context
 
-                # CUI relationships context
-                cui_rel_context = []
-                for cui in cui_context:
-                    cui_rel_context+= [c_r[0] for c_r in cui_relation_lookup(cui)]
-                cui_rel_context = list(set(cui_rel_context))
-                print cui_rel_context
-                context +=cui_rel_context                        
+                if rel:
+
+                    # CUI relationships context
+                    cui_rel_context = []
+                    for cui in cui_context:
+                        cui_rel_context+= [c_r[0] for c_r in cui_relation_lookup(cui)]
+                    cui_rel_context = list(set(cui_rel_context))
+                    print cui_rel_context
+                    context +=cui_rel_context
+
                 for c in context:
                     # Unusre if I'm supposed to repeatedly count this for each center word
                     C[c] += 1
 
                     print >>f, '%s %s' % (w,c)
                     #print '\t%s %s' % (w,c)
+        print
+
     return W, C
 
 
@@ -303,7 +222,7 @@ def main():
     elif context_type == '--cui':
         W, C = extract_context_cuis(doc_toks, contexts_filename, N=window_size)
     elif context_type == '--cui_rel':
-        W, C = extract_context_cuis_rel(doc_toks,contexts_filename, N=window_size)
+        W, C = extract_context_cuis(doc_toks,contexts_filename, N=window_size, rel=True)
     else:
         print 'unknown context type "%s"' % context_type
         exit(1)
