@@ -9,10 +9,10 @@ def main():
 
     try:
         size = sys.argv[1]
-        if size not in ['small', 'medium', 'all']:
+        if size not in ['small', 'medium','medium_2000', 'all']:
             raise Exception('bad')
     except Exception, e:
-        print '\n\tusage: python %s <small|medium|all>\n' % sys.argv[0]
+        print '\n\tusage: python %s <small|medium|medium_2000|all>\n' % sys.argv[0]
         exit(1)
 
     if size == 'small':
