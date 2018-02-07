@@ -183,7 +183,6 @@ def extract_context_cuis(docs, contexts_filename, N=8,rel=False):
                     for cui in cui_context:
                         cui_rel_context+= [c_r[0] for c_r in cui_relation_lookup(cui)]
                     cui_rel_context = list(set(cui_rel_context))
-                    print cui_rel_context
                     context +=cui_rel_context
 
                 for c in context:
