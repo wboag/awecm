@@ -21,6 +21,9 @@ def main():
     elif size == 'medium':
         min_id = 0
         max_id = 100
+    elif size == 'medium_2000':
+        min_id = 0
+        max_id = 2000
     elif size == 'all':
         min_id = 0
         max_id = 1e20
