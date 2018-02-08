@@ -9,10 +9,10 @@ def main():
 
     try:
         size = sys.argv[1]
-        if size not in ['small', 'medium','medium_2000', 'all']:
+        if size not in ['small', 'medium','medium_1000','medium_2000', 'all']:
             raise Exception('bad')
     except Exception, e:
-        print '\n\tusage: python %s <small|medium|medium_2000|all>\n' % sys.argv[0]
+        print '\n\tusage: python %s <small|medium|medium_1000|medium_2000|all>\n' % sys.argv[0]
         exit(1)
 
     if size == 'small':
@@ -21,6 +21,9 @@ def main():
     elif size == 'medium':
         min_id = 0
         max_id = 100
+    elif size == 'medium_1000':
+        min_id = 0
+        max_id = 1000
     elif size == 'medium_2000':
         min_id = 0
         max_id = 2000
