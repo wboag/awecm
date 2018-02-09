@@ -18,7 +18,7 @@ https://www.overleaf.com/11188799yhjcmxphgpjm#/42196701/
 
 # Usage
 
-[Pretrained word embeddings (baseline)](https://drive.google.com/file/d/0B7XkCwpI5KDY)
+[Pretrained word embeddings from Google-News (baseline)](https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing)
 
 NOTE: This code requires Python 2.
 
