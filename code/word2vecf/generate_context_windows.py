@@ -100,23 +100,23 @@ def extract_context_position(docs, contexts_filename, N=8):
 
 def get_cui_context(word):
     ''' Given a word, returns a list of CUIs it is mapped to in the UMLS knowledge graph'''
-        cui_context = [c[0] for c in cui_lookup(word)]
-        cui_context = list(set(cui_context))
-        return cui_context
+    cui_context = [c[0] for c in cui_lookup(word)]
+    cui_context = list(set(cui_context))
+    return cui_context
 
 def get_relationships_cui(cui):
     ''' Given a cui, returns a list of all the cui it is related to in the UMLS knowledge graph'''
-        relationships = [c_r[0] for c_r in cui_relation_lookup(cui)]
-        return relationships
+    relationships = [c_r[0] for c_r in cui_relation_lookup(cui)]
+    return relationships
 
 def get_relationships_word(word):
     ''' Given a word, returns a dictionary of cuis it's related to and their relationships'''
-        cui_context = [c[0] for c in cui_lookup(w)]
-        relationships = {}
-        if len(cui_context)>0:
-            for cui in cui_context:
-                relationships[cui] = get_relationships_cui(cui)
-        return relationships
+    cui_context = [c[0] for c in cui_lookup(w)]
+    relationships = {}
+    if len(cui_context)>0:
+        for cui in cui_context:
+            relationships[cui] = get_relationships_cui(cui)
+    return relationships
 
 
 def extract_context_cuis(docs, contexts_filename, N=8,rel=False, cui_only = False, separate_rel= False):
