@@ -31,3 +31,5 @@
     - data/concept_extraction/original_i2b2/test_data
     - data/concept_extraction/original_i2b2/reference_standard_for_test_data
 
+
+4) Run word2vec.py on your word vectors file
