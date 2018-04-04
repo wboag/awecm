@@ -24,10 +24,14 @@ def main():
 
     try:
         filename = sys.argv[1]
+    except Exception, e:
+        print '\n\tusage: python %s <w2v.vec> [N]\n' % sys.argv[0]
+        exit(1)
+
+    try:
         N = int(sys.argv[2])
     except Exception, e:
-        print '\n\tusage: python %s <w2v.vec> <N>\n' % sys.argv[0]
-        exit(1)
+        N = 1000000000000000000000000
 
     #W = load_vectors(filename, dev=True)
     W = load_vectors(filename, dev=False)
