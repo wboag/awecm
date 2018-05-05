@@ -118,7 +118,7 @@ def get_relationships_word(word):
             relationships[cui] = get_relationships_cui(cui)
     return relationships
 
-def extract_context_cuis_once(docs, contexts_filename, N=8,rel=False, cui_only = False, separate_rel= False):
+def extract_context_cuis_frequency(docs, contexts_filename, N=8,rel=False, cui_only = False, separate_rel= False, frequency=0.1):
 
     '''
     goal: do word2vec's preprocessing
@@ -202,33 +202,35 @@ def extract_context_cuis_once(docs, contexts_filename, N=8,rel=False, cui_only =
                     #print '\t%s %s' % (w,c)
         print
         for w in W.keys():
-            #Step 1 : Build cui context
-            cui_context = get_cui_context(w)
-            if len(cui_context)>0:
-                if rel : 
-                    if separate_rel: #Separate info from CUI and Neighbor
-                        cui_rel_context = []
-                        for cui in cui_context:
-                            C[cui] +=1
-                            print >>f, '%s %s' % (w,cui)
-                            cui_rel_context = [c_r[0] for c_r in cui_relation_lookup(cui)]
-                            for cui_rel in cui_rel_context:
-                                C[cui_rel] +=1
-                                print >>f, '%s %s' % (cui,cui_rel)
-                    else:
-                        # Word gets matched to CUI + Neighboring CUI
-                        cui_rel_context = []
-                        for cui in cui_context:
-                            cui_rel_context+= [c_r[0] for c_r in cui_relation_lookup(cui)]
-                            cui_rel_context = list(set(cui_rel_context))
-                            context +=cui_context
-                            context +=cui_rel_context
-                            for c in context:
-                            # Unusre if I'm supposed to repeatedly count this for each center word
-                                C[c] += 1
-                                print >>f, '%s %s' % (w,c)
-                            #print '\t%s %s' % (w,c)
-
+            word_count = W[w]
+            sampling = min(1,int(frequency*word_count))
+            for i in range(sampling): 
+                #Step 1 : Build cui context
+                cui_context = get_cui_context(w)
+                if len(cui_context)>0:
+                    if rel : 
+                        if separate_rel: #Separate info from CUI and Neighbor
+                            cui_rel_context = []
+                            for cui in cui_context:
+                                C[cui] +=1
+                                print >>f, '%s %s' % (w,cui)
+                                cui_rel_context = [c_r[0] for c_r in cui_relation_lookup(cui)]
+                                for cui_rel in cui_rel_context:
+                                    C[cui_rel] +=1
+                                    print >>f, '%s %s' % (cui,cui_rel)
+                        else:
+                            # Word gets matched to CUI + Neighboring CUI
+                            cui_rel_context = []
+                            for cui in cui_context:
+                                cui_rel_context+= [c_r[0] for c_r in cui_relation_lookup(cui)]
+                                cui_rel_context = list(set(cui_rel_context))
+                                context +=cui_context
+                                context +=cui_rel_context
+                                for c in context:
+                                # Unusre if I'm supposed to repeatedly count this for each center word
+                                    C[c] += 1
+                                    print >>f, '%s %s' % (w,c)
+                                #print '\t%s %s' % (w,c)
     return W, C
     
 
