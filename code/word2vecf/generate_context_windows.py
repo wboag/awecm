@@ -11,7 +11,7 @@ import random
 import numpy as np
 
 
-if '--cui' or '--cui_rel' or '--cui_rel_separate' or '--cui_rel_only_separate' or '--cui_rel_only' or '--cui_only' or '--cui_rel_once' or '--cui_rel_separate_once' in sys.argv:
+if '--cui' or '--cui_rel' or '--cui_rel_separate' or '--cui_rel_only_separate' or '--cui_rel_only' or '--cui_only' or '--cui_rel_frequency' or '--cui_rel_separate_frequency' in sys.argv:
     from umls.code.interface_umls import cui_lookup
     from umls.code.interface_umls import cui_relation_lookup
 
@@ -358,7 +358,7 @@ def main():
         w_vocab = sys.argv[4]
         c_vocab = sys.argv[5]
         context_type = sys.argv[6]
-        assert context_type in ['--word','--cui','--cui_rel', '--cui_rel_separate','--cui_rel_only_separate','--cui_rel_only', '--cui_only','--cui_rel_once','--cui_rel_separate_once']
+        assert context_type in ['--word','--cui','--cui_rel', '--cui_rel_separate','--cui_rel_only_separate','--cui_rel_only', '--cui_only','--cui_rel_frequency','--cui_rel_separate_frequency']
     except Exception, e:
         print '\n\tusage: python %s <corpus> <window_size> <contexts_filename> <w_vocab> <c_vocab> <--word|--cui| --cui_rel>\n'%sys.argv[0]
         exit(1)
@@ -383,10 +383,10 @@ def main():
         W, C = extract_context_cuis(doc_toks,contexts_filename, N=window_size, rel=True, cui_only=True)
     elif context_type == '--cui_only':
         W, C = extract_context_cuis(doc_toks,contexts_filename, N=window_size, cui_only=True)
-    elif context_type == '--cui_rel_once':
-        W, C = extract_context_cuis_once(doc_toks,contexts_filename, N=window_size, rel=True)
-    elif context_type == '--cui_rel_separate_once':
-        W, C = extract_context_cuis_once(doc_toks,contexts_filename, N=window_size, rel=True, separate_rel= True)
+    elif context_type == '--cui_rel_frequency':
+        W, C = extract_context_cuis_frequency(doc_toks,contexts_filename, N=window_size, rel=True)
+    elif context_type == '--cui_rel_separate_frequency':
+        W, C = extract_context_cuis_frequency(doc_toks,contexts_filename, N=window_size, rel=True, separate_rel= True)
 
     else:
         print 'unknown context type "%s"' % context_type
