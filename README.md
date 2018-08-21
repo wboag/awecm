@@ -2,10 +2,6 @@
 Augmented Word Embeddings with a Clinical Metathesaurus
 
 
-# Meetings
-https://docs.google.com/document/d/12jRvXR_I-AuEdjUovERnVne71Ei1dbhgo-UTiImeZnM/edit
-
-
 # Writeup
 https://www.overleaf.com/11188799yhjcmxphgpjm#/42196701/
 
